@@ -1,17 +1,19 @@
-#!/bin/sh
-
-for dir in */; do
-	cd ${dir}
-	echo "Now work in ${dir}"
-	if [ -d ".svn" ]; then
-		svn update
-	fi
-	if [ -d ".git" ]; then
-		git pull
-	fi
-	if [ -d ".hg" ]; then
-		hg pull -u
-	fi
-	cd ../
-	echo "Jobs in ${dir} is done"
+current=`pwd`
+for dir in `find . -name .git -type d` ;do
+	cd $dir/../
+	echo "now in " `pwd`
+	git pull
+	cd $current
+done
+for dir in `find . -name .svn -type d` ; do
+	cd $dir/../
+	echo "now in " `pwd`
+	svn update
+	cd $current
+done
+for dir in `find . -name .hg -type d`;  do
+	cd $dir/../
+	echo "now in " `pwd`
+	hg pull -u
+	cd $current
 done
